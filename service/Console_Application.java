@@ -127,7 +127,9 @@ public class Console_Application {
         ShoppingCart cart = new ShoppingCart();
         Scanner scanner = new Scanner(System.in);
 
-        System.out.println("Welcome to the Tea Shop!");
+        System.out.println("Welcome to the The Tea Heaven!");
+        System.out.println("In our shop we have over 70 types of tea from different countries, so we hope everyone can find their favorite ones!");
+        System.out.println("Instructions are quite simple, but if you need any help with order, please contact support");
         System.out.println("Please enter your name:");
         String name = scanner.nextLine();
         System.out.println("Please enter your email:");
