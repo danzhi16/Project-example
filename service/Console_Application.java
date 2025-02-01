@@ -17,14 +17,50 @@ public class Console_Application {
 
     // Класс для представления покупателя
     static class Customer {
+        int customeriId = 0;
         String name;
         String email;
         double totalAmount;
 
-        Customer(String name, String email) {
+        public Customer(String name, String email, double totalAmount) {
             this.name = name;
             this.email = email;
-            this.totalAmount = 0.0;
+            this.totalAmount = totalAmount;
+
+        }
+
+        Customer(int customeriId, String name, String email, double totalAmount) {
+            this.customeriId = customeriId;
+            this.name = name;
+            this.email = email;
+            this.totalAmount = totalAmount;
+        }
+
+        public String getName() {
+            return name;
+        }
+        public String getEmail() {
+            return email;
+        }
+        public double getTotalAmount() {
+            return totalAmount;
+        }
+        public int getCustomeriId() {
+            return customeriId;
+        }
+        void setCustomeriId(int customeriId) {
+            this.customeriId = customeriId;
+        }
+        void setName(String name) {
+            this.name = name;
+        }
+        void setEmail(String email) {
+            this.email = email;
+        }
+
+
+        void addAmount(double amount) {
+            this.totalAmount += amount;
         }
 
         void addToCart(double amount) {
@@ -78,7 +114,7 @@ public class Console_Application {
         }
     }
 
-    // Функция для имитации магазина
+
     public static void main(String[] args) {
 
         // Пример товаров
@@ -97,7 +133,7 @@ public class Console_Application {
         System.out.println("Please enter your email:");
         String email = scanner.nextLine();
 
-        customer = new Customer(name, email);
+        customer = new Customer(customer.customeriId, name, email, customer.totalAmount);
 
         boolean shopping = true;
 
