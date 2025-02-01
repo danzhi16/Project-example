@@ -14,6 +14,7 @@ class Database {
     private static final String USER = "postgres";
     private static final String PASSWORD = "290607";
 
+
     public static Connection connect() throws SQLException {
         return DriverManager.getConnection(URL, USER, PASSWORD);
     }
