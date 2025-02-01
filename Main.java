@@ -139,7 +139,7 @@ public class Main {
 
         // Дальше продолжаем работу программы
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Welcome to the Tea Shop!");
+        System.out.println("Mystic Infusions – Discover the magic of tea through unique blends and timeless traditions.");
 
         System.out.println("Enter your name:");
         String customerName = scanner.nextLine();  // Заменил на nextLine, так как name обычно строка
