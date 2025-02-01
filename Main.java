@@ -20,6 +20,7 @@ class Database {
     }
 }
 
+
 class Product {
     int productId;
     String name;
@@ -67,9 +68,9 @@ class Shop {
                 try (ResultSet rs = stmt.executeQuery("SELECT product_id, name, price FROM products")) {
                     while (rs.next()) {
                         products.add(new Product(rs.getInt("product_id"), rs.getString("name"), rs.getDouble("price")));
-                                rs.getInt("product_id");
-                                rs.getString("name");
-                                rs.getDouble("price");;
+                        rs.getInt("product_id");
+                        rs.getString("name");
+                        rs.getDouble("price");;
                     }
                 }
             }
@@ -113,7 +114,7 @@ class Shop {
 
 public class Main {
     public static void main(String[] args) {
-        IDB db = new PostgresDB("jdbc:postgresql://localhost:5432", "postgres", "290607", "AngelsOOP") {
+        IDB db = new PostgresDB("jdbc:postgresql://localhost:5432", "postgres", "12345678", "AngelsOOP") {
             @Override
             public Connection getConnection() {
                 return null;
@@ -125,7 +126,7 @@ public class Main {
             }
         };
 
-        try (Connection conn = IDB.connect()) {  // Теперь вызываем метод connect() через объект db
+        try (Connection conn = IDB.connect()) {
             if (conn != null) {
                 System.out.println("🚀 Database connection successful!");
             } else {
