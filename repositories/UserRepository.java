@@ -16,23 +16,22 @@ public class UserRepository implements IUserRepository {
     }
 
     @Override
-    public boolean createUser(String username, String password, String name, String surname, boolean gender){
-        return createUser(new User(username, password, name, surname, gender));
+    public boolean createUser(String username, String password, boolean gender){
+        return createUser(new User(username, password, gender));
     }
+
 
     @Override
     public boolean createUser(User user) {
         Connection conn = null;
         try {
             conn = db.getConnection();
-            String sql = "INSERT INTO users(username, password, name, surname, gender) VALUES (?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO users(username, password, gender) VALUES (?, ?, ?)";
             PreparedStatement st = conn.prepareStatement(sql);
 
             st.setString(1, user.getUsername());
             st.setString(2, user.getPassword());
-            st.setString(3, user.getName());
-            st.setString(4, user.getSurname());
-            st.setBoolean(5, user.isGender());
+            st.setBoolean(3, user.isGender());
             st.execute();
 
             return true;
@@ -58,8 +57,6 @@ public class UserRepository implements IUserRepository {
                         rs.getInt("id"),
                         rs.getString("username"),
                         rs.getString("password"),
-                        rs.getString("name"),
-                        rs.getString("surname"),
                         rs.getBoolean("gender")
                 );
             }
@@ -83,8 +80,6 @@ public class UserRepository implements IUserRepository {
                         rs.getInt("id"),
                         rs.getString("username"),
                         rs.getString("password"),
-                        rs.getString("name"),
-                        rs.getString("surname"),
                         rs.getBoolean("gender")
                 ));
             }
@@ -128,8 +123,6 @@ public class UserRepository implements IUserRepository {
                         rs.getInt("id"),
                         rs.getString("username"),
                         rs.getString("password"),
-                        rs.getString("name"),
-                        rs.getString("surname"),
                         rs.getBoolean("gender")
                 );
             }

@@ -18,6 +18,7 @@ public class Main {
         IProductRepository product_repo = new ProductRepository(db);
         IProductController product_controller = new ProductController(product_repo);
         MyApplication app = new MyApplication(user_controller, product_controller);
+        int i = 1;
         app.start();
         db.close();
     }

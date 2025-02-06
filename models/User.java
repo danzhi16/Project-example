@@ -3,21 +3,17 @@ package models;
 public class User {
     private int id;
     private String username;
-    private String password;
-    private String name;
-    private String surname;
+    private String password;;
     private boolean gender;
 
-    public User(String username, String password, String name, String surname, boolean gender) {
+    public User(String username, String password, boolean gender) {
         setUsername(username);
         setPassword(password);
-        setName(name);
-        setSurname(surname);
         setGender(gender);
     }
 
-    public User(int id, String username, String password, String name, String surname, boolean gender) {
-        this(username, password, name, surname, gender);
+    public User(int id, String username, String password, boolean gender) {
+        this(username, password, gender);
         this.id = id;
     }
 
@@ -37,22 +33,6 @@ public class User {
         this.password = password;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getSurname() {
-        return surname;
-    }
-
-    public void setSurname(String surname) {
-        this.surname = surname;
-    }
-
     public boolean isGender() {
         return gender;
     }
@@ -65,8 +45,6 @@ public class User {
     public String toString() {
         return "User{id=" + id +
                 ", username='" + username + '\'' +
-                ", name='" + name + '\'' +
-                ", surname='" + surname + '\'' +
                 ", gender=" + (gender ? "Male" : "Female") + '}';
     }
 }

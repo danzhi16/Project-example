@@ -85,10 +85,6 @@ public class MyApplication {
         String username = scanner.next();
         System.out.println("Please enter a password: ");
         String password = scanner.next();
-        System.out.println("Please enter a name: ");
-        String name = scanner.next();
-        System.out.println("Please enter a surname: ");
-        String surname = scanner.next();
         System.out.println("Please enter a gender (male/female): ");
         String gender = scanner.next();
 
@@ -101,7 +97,7 @@ public class MyApplication {
             return;
         }
 
-        String response = userController.createUser(username, password, name, surname, gender);
+        String response = userController.createUser(username, password, gender);
         System.out.println(response);
     }
 
