@@ -16,8 +16,8 @@ public class UserRepository implements IUserRepository {
     }
 
     @Override
-    public boolean createUser(String username, String password, String email){
-        return createUser(new User(username, password, email));
+    public boolean createUser(String username, String password, String email, String role){
+        return createUser(new User(username, password, email, role));
     }
 
 
@@ -26,12 +26,13 @@ public class UserRepository implements IUserRepository {
         Connection conn = null;
         try {
             conn = db.getConnection();
-            String sql = "INSERT INTO users(username, password, email) VALUES (?, ?, ?)";
+            String sql = "INSERT INTO users(username, password, email, role) VALUES (?, ?, ?, ?)";
             PreparedStatement st = conn.prepareStatement(sql);
 
             st.setString(1, user.getUsername());
             st.setString(2, user.getPassword());
             st.setString(3, user.getEmail());
+            st.setString(4, user.getRole());
             st.execute();
 
             return true;
@@ -57,7 +58,8 @@ public class UserRepository implements IUserRepository {
                         rs.getInt("id"),
                         rs.getString("username"),
                         rs.getString("password"),
-                        rs.getString("email")
+                        rs.getString("email"),
+                        rs.getString("role")
                 );
             }
         } catch (SQLException e) {
@@ -80,7 +82,8 @@ public class UserRepository implements IUserRepository {
                         rs.getInt("id"),
                         rs.getString("username"),
                         rs.getString("password"),
-                        rs.getString("email")
+                        rs.getString("email"),
+                        rs.getString("role")
                 ));
             }
             return users;
@@ -123,7 +126,8 @@ public class UserRepository implements IUserRepository {
                         rs.getInt("id"),
                         rs.getString("username"),
                         rs.getString("password"),
-                        rs.getString("email")
+                        rs.getString("email"),
+                        rs.getString("role")
                 );
             }
         } catch (SQLException e) {

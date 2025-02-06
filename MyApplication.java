@@ -86,9 +86,11 @@ public class MyApplication {
         String password = scanner.next();
         System.out.println("Please enter an email: ");
         String email = scanner.next();
+        System.out.println("Please enter your role(CUSTOMER, SELLER, ADMIN) ");
+        String role = scanner.next();
 
 
-        String response = userController.createUser(username, password, email);
+        String response = userController.createUser(username, password, email, role);
         System.out.println(response);
     }
 
@@ -97,8 +99,12 @@ public class MyApplication {
         String username = scanner.next();
         System.out.println("Enter your password: ");
         String password = scanner.next();
+        System.out.println("Please enter your email: ");
+        String email = scanner.next();
+        System.out.println("Please enter your role(CUSTOMER, SELLER, ADMIN) ");
+        String role = scanner.next();
 
-        boolean isLoggedIn = userController.loginUser(username, password);
+        boolean isLoggedIn = userController.loginUser(username, password, email, role);
 
         if (isLoggedIn) {
             System.out.println("Login successful! Welcome, " + username);

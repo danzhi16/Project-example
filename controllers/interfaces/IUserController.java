@@ -1,12 +1,10 @@
 package controllers.interfaces;
 
-import models.User;
-
 public interface IUserController {
-    String createUser(String username, String password, String gender);
+    String createUser(String username, String password, String gender, String role);
     String getUserById(int id);
     String getAllUsers();
     String deleteUser(int id);
 
-    boolean loginUser(String username, String password);
+    boolean loginUser(String username, String password, String email, String role);
 }
