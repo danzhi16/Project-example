@@ -63,7 +63,7 @@ public class MyApplication {
     private void UserMenu() {
         System.out.println("Select an option:");
         System.out.println("1. Create a User");
-        System.out.println("2. Log in as user");
+        System.out.println("2. Sign in");
         System.out.println("0. Exit");
         try {
             int option = scanner.nextInt();
