@@ -8,7 +8,6 @@ public class MyApplication {
     private final IUserController userController;
     private  final IProductController productController;
     private final Scanner scanner = new Scanner(System.in);
-    private boolean isGender;
 
     public MyApplication(IUserController userController, IProductController productController) {
         this.userController = userController;
@@ -85,19 +84,11 @@ public class MyApplication {
         String username = scanner.next();
         System.out.println("Please enter a password: ");
         String password = scanner.next();
-        System.out.println("Please enter a gender (male/female): ");
-        String gender = scanner.next();
+        System.out.println("Please enter an email: ");
+        String email = scanner.next();
 
-        if(gender.equalsIgnoreCase("male")){
-            isGender = true;
-        } else if (gender.equalsIgnoreCase("f")) {
-            isGender = false;
-        } else {
-            System.out.println("Invalid gender");
-            return;
-        }
 
-        String response = userController.createUser(username, password, gender);
+        String response = userController.createUser(username, password, email);
         System.out.println(response);
     }
 

@@ -16,8 +16,8 @@ public class UserRepository implements IUserRepository {
     }
 
     @Override
-    public boolean createUser(String username, String password, boolean gender){
-        return createUser(new User(username, password, gender));
+    public boolean createUser(String username, String password, String email){
+        return createUser(new User(username, password, email));
     }
 
 
@@ -26,12 +26,12 @@ public class UserRepository implements IUserRepository {
         Connection conn = null;
         try {
             conn = db.getConnection();
-            String sql = "INSERT INTO users(username, password, gender) VALUES (?, ?, ?)";
+            String sql = "INSERT INTO users(username, password, email) VALUES (?, ?, ?)";
             PreparedStatement st = conn.prepareStatement(sql);
 
             st.setString(1, user.getUsername());
             st.setString(2, user.getPassword());
-            st.setBoolean(3, user.isGender());
+            st.setString(3, user.getEmail());
             st.execute();
 
             return true;
@@ -57,7 +57,7 @@ public class UserRepository implements IUserRepository {
                         rs.getInt("id"),
                         rs.getString("username"),
                         rs.getString("password"),
-                        rs.getBoolean("gender")
+                        rs.getString("email")
                 );
             }
         } catch (SQLException e) {
@@ -80,7 +80,7 @@ public class UserRepository implements IUserRepository {
                         rs.getInt("id"),
                         rs.getString("username"),
                         rs.getString("password"),
-                        rs.getBoolean("gender")
+                        rs.getString("email")
                 ));
             }
             return users;
@@ -123,7 +123,7 @@ public class UserRepository implements IUserRepository {
                         rs.getInt("id"),
                         rs.getString("username"),
                         rs.getString("password"),
-                        rs.getBoolean("gender")
+                        rs.getString("email")
                 );
             }
         } catch (SQLException e) {

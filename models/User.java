@@ -4,16 +4,16 @@ public class User {
     private int id;
     private String username;
     private String password;;
-    private boolean gender;
+    private String email;
 
-    public User(String username, String password, boolean gender) {
+    public User(String username, String password, String email) {
         setUsername(username);
         setPassword(password);
-        setGender(gender);
+        setEmail(email);
     }
 
-    public User(int id, String username, String password, boolean gender) {
-        this(username, password, gender);
+    public User(int id, String username, String password, String email) {
+        this(username, password, email);
         this.id = id;
     }
 
@@ -33,18 +33,14 @@ public class User {
         this.password = password;
     }
 
-    public boolean isGender() {
-        return gender;
-    }
+    public String getEmail() { return email; }
 
-    public void setGender(boolean gender) {
-        this.gender = gender;
-    }
+    public void setEmail(String email) { this.email = email; }
 
     @Override
     public String toString() {
         return "User{id=" + id +
                 ", username='" + username + '\'' +
-                ", gender=" + (gender ? "Male" : "Female") + '}';
+                ", email=" + email + '}';
     }
 }
