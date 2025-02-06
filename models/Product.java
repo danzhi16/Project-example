@@ -4,21 +4,21 @@ public class Product {
     private int id;
     private String name;
     private String description;
-    private int category;
+    private int category_id;
     private double price;
 
-    public Product(int id, String name, String description, String category, double price) {
+    public Product(int id, String name, String description, String category_id, double price) {
     }
 
-    public Product(String name, String description, int category, double price) {
+    public Product(String name, String description, int category_id, double price) {
         setName(name);
         setDescription(description);
-        setCategory(category);
+        setCategory(category_id);
         setPrice(price);
     }
 
-    public Product(int id, String name, String description, int category, double price) {
-        this(name, description, category, price);
+    public Product(int id, String name, String description, int category_id, double price) {
+        this(name, description, category_id, price);
         this.id = id;
     }
 
@@ -43,11 +43,11 @@ public class Product {
     }
 
     public int getCategory() {
-        return category;
+        return category_id;
     }
 
     public void setCategory(int category) {
-        this.category = category;
+        this.category_id = category_id;
     }
 
     public double getPrice() {
@@ -64,7 +64,7 @@ public class Product {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
-                ", categoryId=" + category +
+                ", categoryId=" + category_id +
                 ", price=" + price +
                 '}';
     }

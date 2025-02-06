@@ -41,7 +41,7 @@ public class ProductRepository implements IProductRepository {
                 Product product = new Product(rs.getInt("id"),
                         rs.getString("name"),
                         rs.getString("description"),
-                        rs.getString("category"),
+                        rs.getString("category_id"),
                         rs.getDouble("price"));
                 products.add(product);
             }
