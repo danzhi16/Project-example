@@ -1,50 +1,37 @@
 package service;
 
 import service.interfaces.ICustomerService;
+import Data.Interfaces.IDB;
 
 import java.sql.*;
-import java.util.Scanner;
 
 public class CustomerService implements ICustomerService {
+    private final IDB db;
+
+    public CustomerService(IDB db) {
+        this.db = db;
+    }
+
     @Override
-    public int createCustomer(Connection conn, String name, String email) {
+    public int createCustomer(String name, String email) {
         String sql = "INSERT INTO customers (first_name, email) VALUES (?, ?) RETURNING customer_id;";
-        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+        try (Connection conn = db.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, name);
             stmt.setString(2, email);
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
-                return rs.getInt("customer_id"); // Return new customer ID
+                return rs.getInt("customer_id"); // Возвращаем ID нового клиента
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return -1; // Error case
+        return -1; // Ошибка
     }
 
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Enter your name: ");
-        String name = scanner.nextLine();
-        System.out.println("Enter your email: ");
-        String email = scanner.nextLine();
-        String url = "jdbc:postgresql://localhost:5432/tea_shop";
-        String user = "postgres";
-        String password = "12345678";
-
-        try (Connection conn = DriverManager.getConnection(url, user, password)) {
-            System.out.println("Connected successfully!");
-
-            CustomerService customerService = new CustomerService();
-            int customerId = customerService.createCustomer(conn, name, email);
-            if (customerId != -1) {
-                System.out.println("Welcome, " + name + "! Your customer ID is: " + customerId);
-            } else {
-                System.out.println("Error creating customer.");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            throw new RuntimeException(e);
-        }
+    @Override
+    public int createCustomer(Connection conn, String name, String email) {
+        return 0;
     }
 }

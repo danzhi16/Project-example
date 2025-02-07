@@ -17,7 +17,7 @@ public class Product implements IProduct {
 
     public Product(int id, String name, String description, String categoryId, double price) {}
 
-    public Product(String name, String description, int categoryId, double price) {
+    public Product(int id, String name, String description, int categoryId, double price, String categoryName) {
         this.id = idCounter++;
         this.name = name;
         this.description = description;
@@ -36,7 +36,7 @@ public class Product implements IProduct {
 
     @Override
     public Product createProduct(String name, String description, int categoryId, double price) {
-        return new Product(name, description, categoryId, price);
+        return new Product(rs.getInt("id"), name, description, categoryId, price, rs.getString("category_name"));
     }
 
     @Override
