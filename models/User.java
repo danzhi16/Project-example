@@ -15,7 +15,7 @@ public class User implements IUser {
     private String email;
     private String role;
 
-    public User(String username, String password, String email, Role role) {}
+    public User() {}
 
     public User(String username, String password, String email, String role) {
         this.id = idCounter++;

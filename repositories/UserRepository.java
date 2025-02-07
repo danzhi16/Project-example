@@ -20,7 +20,7 @@ public class UserRepository implements IUserRepository {
 
     @Override
     public boolean createUser(String username, String password, String email, String role) {
-        return createUser(new User(username, password, email, Role.valueOf(role.toUpperCase())));
+        return createUser(new User(username, password, email, role));
     }
 
     @Override
@@ -32,7 +32,7 @@ public class UserRepository implements IUserRepository {
             st.setString(1, user.getUsername());
             st.setString(2, user.getPassword());
             st.setString(3, user.getEmail());
-            st.setString(4, user.getRole().toString()); // Исправлено
+            st.setString(4, user.getRole());
 
             st.execute();
             return true;
@@ -56,7 +56,7 @@ public class UserRepository implements IUserRepository {
                         rs.getString("username"),
                         rs.getString("password"),
                         rs.getString("email"),
-                        Role.valueOf(rs.getString("role").toUpperCase()) // Исправлено
+                        rs.getString("role")
                 );
             }
         } catch (SQLException e) {
@@ -79,7 +79,7 @@ public class UserRepository implements IUserRepository {
                         rs.getString("username"),
                         rs.getString("password"),
                         rs.getString("email"),
-                        Role.valueOf(rs.getString("role").toUpperCase()) // Исправлено
+                        rs.getString("role")
                 ));
             }
         } catch (SQLException e) {
@@ -117,6 +117,10 @@ public class UserRepository implements IUserRepository {
         return false;
     }
 
+    private boolean hasAccess(User currentUser, Role role) {
+        return currentUser.getRole().equals(role);
+    }
+
     @Override
     public User getUserByUsername(String username) {
         String sql = "SELECT * FROM users WHERE username = ?";
@@ -131,7 +135,7 @@ public class UserRepository implements IUserRepository {
                         rs.getString("username"),
                         rs.getString("password"),
                         rs.getString("email"),
-                        Role.valueOf(rs.getString("role").toUpperCase()) // Исправлено
+                        rs.getString("role")
                 );
             }
         } catch (SQLException e) {
@@ -140,7 +144,6 @@ public class UserRepository implements IUserRepository {
         return null;
     }
 
-    private boolean hasAccess(User user, Role requiredRole) {
-        return user.getRole().equals(requiredRole); // Исправлено
-    }
+
+
 }
