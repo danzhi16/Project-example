@@ -54,7 +54,7 @@ public class PostgresDB implements IDB {
     }
 
     @Override
-    public static Connection getConnection() {
+    public Connection getConnection() {
         String connectionUrl = host + "/" + dbname;
         try{
             if(connection != null && !connection.isClosed()) {

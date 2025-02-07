@@ -1,6 +1,7 @@
 package models;
 
 import models.interfaces.IProduct;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -14,18 +15,19 @@ public class Product implements IProduct {
     private String description;
     private int categoryId;
     private double price;
+    private String categoryName; // Добавлено поле для названия категории
 
-    public Product(int id, String name, String description, String categoryId, double price) {}
-
+    // Конструктор для загрузки данных из БД (с категорией)
     public Product(int id, String name, String description, int categoryId, double price, String categoryName) {
-        this.id = idCounter++;
+        this.id = id;
         this.name = name;
         this.description = description;
         this.categoryId = categoryId;
         this.price = price;
-        products.add(this);
+        this.categoryName = categoryName;
     }
 
+    // Конструктор без categoryName (если его нет)
     public Product(int id, String name, String description, int categoryId, double price) {
         this.id = id;
         this.name = name;
@@ -36,21 +38,28 @@ public class Product implements IProduct {
 
     @Override
     public Product createProduct(String name, String description, int categoryId, double price) {
-        return new Product(rs.getInt("id"), name, description, categoryId, price, rs.getString("category_name"));
+        return new Product(idCounter++, name, description, categoryId, price);
     }
 
     @Override
+    public Product createProduct(String name, String description, double price, int categoryId) {
+        return null;
+    }
+
     public Product getProductById(int id) {
         Optional<Product> product = products.stream().filter(p -> p.getId() == id).findFirst();
         return product.orElse(null);
     }
 
-    @Override
     public List<Product> getAllProducts() {
         return new ArrayList<>(products);
     }
 
     @Override
+    public boolean updateProduct(int id, String name, String description, double price, int categoryId) {
+        return false;
+    }
+
     public boolean updateProduct(int id, String name, String description, int categoryId, double price) {
         for (Product product : products) {
             if (product.getId() == id) {
@@ -64,7 +73,6 @@ public class Product implements IProduct {
         return false;
     }
 
-    @Override
     public boolean deleteProduct(int id) {
         return products.removeIf(product -> product.getId() == id);
     }
@@ -105,6 +113,14 @@ public class Product implements IProduct {
         this.price = price;
     }
 
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
+    }
+
     @Override
     public String toString() {
         return "Product{" +
@@ -113,6 +129,7 @@ public class Product implements IProduct {
                 ", description='" + description + '\'' +
                 ", categoryId=" + categoryId +
                 ", price=" + price +
+                ", categoryName='" + categoryName + '\'' +
                 '}';
     }
 }
