@@ -41,37 +41,32 @@ public class ProductRepository implements IProductRepository {
     }
 
     @Override
-    public Product getProductById(int id) {
-        if (id <= 0) {
-            System.out.println("Validation failed: Product ID must be positive.");
-            return null;
-        }
+    public List<Product> getProductById(int id) {
+        List<Product> products = new ArrayList<>();
 
-        String sql = "SELECT p.id, p.name, p.description, p.price, c.id AS category_id, c.name AS category_name " +
-                "FROM products p " +
-                "JOIN categories c ON p.category_id = c.id " +
-                "WHERE p.id = ?";
-
+        // Example logic to retrieve products based on category id
+        // Assuming you query the database and get a result set
+        String query = "SELECT id, name, description, price FROM products WHERE category_id = ?";
         try (Connection conn = db.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+             PreparedStatement stmt = conn.prepareStatement(query)) {
 
             stmt.setInt(1, id);
             ResultSet rs = stmt.executeQuery();
 
-            if (rs.next()) {
-                return new Product(
-                        rs.getInt("id"),
-                        rs.getString("name"),
-                        rs.getString("description"),
-                        rs.getInt("category_id"),
-                        rs.getDouble("price"),
-                        rs.getString("category_name") // Добавляем название категории
-                );
+            while (rs.next()) {
+                int productId = rs.getInt("id");
+                String productName = rs.getString("name");
+                String description = rs.getString("description");
+                double price = rs.getDouble("price");
+
+                // Add the product to the list
+                products.add(new Product(productId, productName, description, (int) price, id));
             }
         } catch (SQLException e) {
-            System.out.println("SQL error: " + e.getMessage());
+            e.printStackTrace();
         }
-        return null;
+
+        return products;
     }
 
     @Override
@@ -91,8 +86,8 @@ public class ProductRepository implements IProductRepository {
                         rs.getString("name"),
                         rs.getString("description"),
                         rs.getInt("category_id"),
-                        rs.getDouble("price"),
-                        rs.getString("category_name") // Добавляем название категории
+                        rs.getDouble("price")
+                        // Добавляем название категории
                 );
                 products.add(product);
             }

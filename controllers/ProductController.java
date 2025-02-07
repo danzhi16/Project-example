@@ -22,7 +22,7 @@ public class ProductController implements IProductController {
 
     @Override
     public String getProductById(int id) {
-        Product product = repo.getProductById(id);
+        Product product = (Product) repo.getProductById(id);
         return (product == null) ? "Product was not found" : product.toString();
     }
 

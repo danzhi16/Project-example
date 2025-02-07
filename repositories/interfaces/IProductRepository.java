@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface IProductRepository {
     boolean createProduct(Product product);
-    Product getProductById(int id);
+    List<Product> getProductById(int id);
     List<Product> getAllProducts();
     boolean deleteProduct(int id);
 }

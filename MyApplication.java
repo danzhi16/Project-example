@@ -1,11 +1,12 @@
 import controllers.interfaces.IProductController;
 import controllers.interfaces.IUserController;
 import controllers.interfaces.ICategoryController;
+import repositories.CategoryRepository;
 
-import java.util.InputMismatchException;
-import java.util.Scanner;
-import repositories.interfaces.ICategoryRepository;
-import repositories.interfaces.IProductRepository;
+import java.util.*;
+
+import models.Category;
+import models.Product;
 
 
 public class MyApplication {
@@ -30,7 +31,7 @@ public class MyApplication {
                     case 2: getUserByIdMenu(); break;
                     case 3: createUserMenu(); break;
                     case 4: deleteUserMenu(); break;
-                    case 5: getAllCategories(); break;
+                    case 5: runMenu(); break;
                     default: return;
                 }
             } catch (InputMismatchException e) {
@@ -176,10 +177,12 @@ public class MyApplication {
         System.out.println(response);
     }
 
-    private void getAllCategories(){
+    private List<Category> getAllCategories(){
         String response = categoryController.getAllCategories();
         System.out.println(response);
+        return null;
     }
+
 
     private void mainMenu() {
         System.out.println();
@@ -192,5 +195,40 @@ public class MyApplication {
         System.out.println("5. List of goods (Feature in progress)");
         System.out.println("0. Exit");
         System.out.print("Enter option (0-5): ");
+
     }
+
+    public void runMenu() {
+        Scanner scanner = new Scanner(System.in);
+        List<Category> categories = getAllCategories();
+
+
+        // Получим выбор пользователя
+        System.out.print("Введите цифру от 1 до 6: ");
+        int categoryChoice = scanner.nextInt();
+
+        if (categoryChoice >= 1 && categoryChoice <= 6) {
+            Category selectedCategory = categories.get(categoryChoice - 1);
+            List<Product> products = getProductById(selectedCategory.getId());
+
+            // Показать продукты выбранной категории
+            System.out.println("Продукты в категории " + selectedCategory.getName() + ":");
+            for (Product product : products) {
+                System.out.println(product);
+            }
+        } else {
+            System.out.println("Неверный выбор!");
+        }
+
+        scanner.close();
+    }
+
+    private List<Product> getProductById(int id) {
+        String response = productController.getProductById(id);
+        System.out.println(response);
+        return null;
+    }
+
+
+
 }

@@ -1,9 +1,16 @@
 package models;
 
+import Data.PostgresDB;
 import models.interfaces.ICategory;
+
+import java.sql.*;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
+
+import static org.postgresql.PGProperty.PASSWORD;
+import static org.postgresql.jdbc.EscapedFunctions.USER;
 
 public class Category implements ICategory {
     private static List<Category> categories = new ArrayList<>();
@@ -21,7 +28,8 @@ public class Category implements ICategory {
 
     @Override
     public Category createCategory(int id, String name) {
-        return new Category(id, name);
+        Category category = new Category(id, name);  // Create new Category object
+        return category;  // Return the created category
     }
 
     @Override
@@ -71,4 +79,6 @@ public class Category implements ICategory {
                 ", name='" + name + '\'' +
                 '}';
     }
+
+
 }

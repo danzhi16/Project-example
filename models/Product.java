@@ -15,17 +15,7 @@ public class Product implements IProduct {
     private String description;
     private int categoryId;
     private double price;
-    private String categoryName; // Добавлено поле для названия категории
 
-    // Конструктор для загрузки данных из БД (с категорией)
-    public Product(int id, String name, String description, int categoryId, double price, String categoryName) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.categoryId = categoryId;
-        this.price = price;
-        this.categoryName = categoryName;
-    }
 
     // Конструктор без categoryName (если его нет)
     public Product(int id, String name, String description, int categoryId, double price) {
@@ -113,13 +103,7 @@ public class Product implements IProduct {
         this.price = price;
     }
 
-    public String getCategoryName() {
-        return categoryName;
-    }
 
-    public void setCategoryName(String categoryName) {
-        this.categoryName = categoryName;
-    }
 
     @Override
     public String toString() {
@@ -129,7 +113,6 @@ public class Product implements IProduct {
                 ", description='" + description + '\'' +
                 ", categoryId=" + categoryId +
                 ", price=" + price +
-                ", categoryName='" + categoryName + '\'' +
                 '}';
     }
 }
