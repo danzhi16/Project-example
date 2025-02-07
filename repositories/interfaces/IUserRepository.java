@@ -16,6 +16,8 @@ public interface IUserRepository {
 
     boolean deleteUser(int id);
 
+    boolean deleteUser(int id, User currentUser);
+
     User getUserByUsername(String username);
 }
 
