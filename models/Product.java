@@ -12,31 +12,31 @@ public class Product implements IProduct {
     private int id;
     private String name;
     private String description;
-    private double price;
     private int categoryId;
+    private double price;
 
-    public Product(int id, String name, String description, double price, String categoryId) {}
+    public Product(int id, String name, String description, String categoryId, double price) {}
 
-    public Product(String name, String description, double price, int categoryId) {
+    public Product(int id, String name, String description, int categoryId, double price, String categoryName) {
         this.id = idCounter++;
         this.name = name;
         this.description = description;
-        this.price = price;
         this.categoryId = categoryId;
+        this.price = price;
         products.add(this);
     }
 
-    public Product(int id, String name, String description, double price, int categoryId) {
+    public Product(int id, String name, String description, int categoryId, double price) {
         this.id = id;
         this.name = name;
         this.description = description;
-        this.price = price;
         this.categoryId = categoryId;
+        this.price = price;
     }
 
     @Override
-    public Product createProduct(String name, String description, double price, int categoryId) {
-        return new Product(name, description, price, categoryId);
+    public Product createProduct(String name, String description, int categoryId, double price) {
+        return new Product(rs.getInt("id"), name, description, categoryId, price, rs.getString("category_name"));
     }
 
     @Override
@@ -51,13 +51,13 @@ public class Product implements IProduct {
     }
 
     @Override
-    public boolean updateProduct(int id, String name, String description,  double price, int categoryId) {
+    public boolean updateProduct(int id, String name, String description, int categoryId, double price) {
         for (Product product : products) {
             if (product.getId() == id) {
                 product.setName(name);
                 product.setDescription(description);
-                product.setPrice(price);
                 product.setCategoryId(categoryId);
+                product.setPrice(price);
                 return true;
             }
         }
@@ -111,8 +111,8 @@ public class Product implements IProduct {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
-                ", price=" + price +
                 ", categoryId=" + categoryId +
+                ", price=" + price +
                 '}';
     }
 }
