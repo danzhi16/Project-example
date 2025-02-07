@@ -7,30 +7,21 @@ import java.util.Optional;
 
 public class Category implements ICategory {
     private static List<Category> categories = new ArrayList<>();
-    private static int idCounter = 1;
 
     private int id;
     private String name;
-    private String description;
 
-    public Category() {}
 
-    public Category(String name, String description) {
-        this.id = idCounter++;
+    public Category(int id, String name) {
+        this.id = id;
         this.name = name;
-        this.description = description;
         categories.add(this);
     }
 
-    public Category(int id, String name, String description) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-    }
 
     @Override
-    public Category createCategory(String name, String description) {
-        return new Category(name, description);
+    public Category createCategory(int id, String name) {
+        return new Category(id, name);
     }
 
     @Override
@@ -45,11 +36,10 @@ public class Category implements ICategory {
     }
 
     @Override
-    public boolean updateCategory(int id, String name, String description) {
+    public boolean updateCategory(int id, String name) {
         for (Category category : categories) {
             if (category.getId() == id) {
                 category.setName(name);
-                category.setDescription(description);
                 return true;
             }
         }
@@ -73,20 +63,12 @@ public class Category implements ICategory {
         this.name = name;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
 
     @Override
     public String toString() {
         return "Category{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
                 '}';
     }
 }

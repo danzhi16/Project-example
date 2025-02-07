@@ -1,31 +1,36 @@
 import controllers.interfaces.IProductController;
 import controllers.interfaces.IUserController;
+import controllers.interfaces.ICategoryController;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
+import repositories.interfaces.ICategoryRepository;
+import repositories.interfaces.IProductRepository;
+
 
 public class MyApplication {
     private final IUserController userController;
     private  final IProductController productController;
+    private  final ICategoryController categoryController;
     private final Scanner scanner = new Scanner(System.in);
 
-    public MyApplication(IUserController userController, IProductController productController) {
+    public MyApplication(IUserController userController, IProductController productController, ICategoryController categoryController) {
         this.userController = userController;
         this.productController = productController;
+        this.categoryController = categoryController;
     }
 
     public void start() {
         while (true) {
+            mainMenu();
             try {
-                System.out.println("Welcome to Tea store DB!");
-                System.out.println("Select an option:");
-                System.out.println("1. Log in as admin");
-                System.out.println("2. Log in as user");
-                System.out.println("0. Exit");
                 int option = scanner.nextInt();
                 switch (option) {
-                    case 1: AdminMenu(); break;
-                    case 2: UserMenu(); break;
+                    case 1: getAllUsersMenu(); break;
+                    case 2: getUserByIdMenu(); break;
+                    case 3: createUserMenu(); break;
+                    case 4: deleteUserMenu(); break;
+                    case 5: getAllCategories(); break;
                     default: return;
                 }
             } catch (InputMismatchException e) {
@@ -114,7 +119,7 @@ public class MyApplication {
         System.out.println("Welcome to your user dashboard!");
         System.out.println("1. View Profile");
         System.out.println("2. Logout");
-        System.out.println("3. List of goods");
+        System.out.println("3. List of categories");
 
         try {
             int option = scanner.nextInt();
@@ -126,7 +131,7 @@ public class MyApplication {
                     System.out.println("Logging out...");
                     return;
                 case 3:
-                    getAllProducts(); break;
+                    getAllCategories(); break;
                 default:
                     System.out.println("Invalid option.");
             }
@@ -168,6 +173,11 @@ public class MyApplication {
     }
     private void getAllProducts(){
         String response = productController.getAllProducts();
+        System.out.println(response);
+    }
+
+    private void getAllCategories(){
+        String response = categoryController.getAllCategories();
         System.out.println(response);
     }
 

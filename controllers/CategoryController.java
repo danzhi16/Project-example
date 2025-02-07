@@ -15,8 +15,8 @@ public class CategoryController implements ICategoryController {
     }
 
     @Override
-    public String createCategory(String name, String description) {
-        Category category = new Category(name, description);
+    public String createCategory(int id, String name) {
+        Category category = new Category(id, name);
         boolean created = repo.createCategory(category);
         return (created) ? "Category was created" : "Category creation failed";
     }
