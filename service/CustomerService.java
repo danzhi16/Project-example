@@ -28,7 +28,6 @@ public class CustomerService implements ICustomerService {
         String name = scanner.nextLine();
         System.out.println("Enter your email: ");
         String email = scanner.nextLine();
-
         String url = "jdbc:postgresql://localhost:5432/tea_shop";
         String user = "postgres";
         String password = "12345678";
