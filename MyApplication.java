@@ -99,12 +99,8 @@ public class MyApplication {
         String username = scanner.next();
         System.out.println("Enter your password: ");
         String password = scanner.next();
-        System.out.println("Please enter your email: ");
-        String email = scanner.next();
-        System.out.println("Please enter your role(CUSTOMER, SELLER, ADMIN) ");
-        String role = scanner.next();
 
-        boolean isLoggedIn = userController.loginUser(username, password, email, role);
+        boolean isLoggedIn = userController.loginUser(username, password );
 
         if (isLoggedIn) {
             System.out.println("Login successful! Welcome, " + username);

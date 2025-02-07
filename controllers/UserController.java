@@ -49,7 +49,7 @@ public class UserController implements IUserController {
     }
 
     @Override
-    public boolean loginUser(String username, String password, String email, String role) {
+    public boolean loginUser(String username, String password) {
         User user = repo.getUserByUsername(username);
         if (user == null) {
             return false; // User not found
