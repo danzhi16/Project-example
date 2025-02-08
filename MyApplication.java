@@ -1,18 +1,14 @@
 import controllers.interfaces.IProductController;
 import controllers.interfaces.IUserController;
 import controllers.interfaces.ICategoryController;
-import repositories.CategoryRepository;
-
-import java.util.*;
-
 import models.Category;
 import models.Product;
-
+import java.util.*;
 
 public class MyApplication {
     private final IUserController userController;
-    private  final IProductController productController;
-    private  final ICategoryController categoryController;
+    private final IProductController productController;
+    private final ICategoryController categoryController;
     private final Scanner scanner = new Scanner(System.in);
 
     public MyApplication(IUserController userController, IProductController productController, ICategoryController categoryController) {
@@ -23,217 +19,165 @@ public class MyApplication {
 
     public void start() {
         while (true) {
+            System.out.println("Welcome! Please select an option:");
+            System.out.println("1. Register");
+            System.out.println("2. Sign In");
+            System.out.println("0. Exit");
+
             try {
-                System.out.println("Welcome to Tea store DB!");
-                System.out.println("Select an option:");
-                System.out.println("1. Log in as admin");
-                System.out.println("2. Log in as user");
-                System.out.println("0. Exit");
                 int option = scanner.nextInt();
                 switch (option) {
-                    case 1: AdminMenu(); break;
-                    case 2: UserMenu(); break;
-                    default: return;
+                    case 1: registerUser(); break;
+                    case 2: loginUser(); break;
+                    case 0: return;
+                    default: System.out.println("Invalid option. Try again.");
                 }
             } catch (InputMismatchException e) {
                 System.out.println("Input must be a number.");
-                scanner.next(); // Clear the invalid input
-            } catch (Exception e) {
-                System.out.println(e.getMessage());
+                scanner.next();
             }
         }
     }
 
-    private void AdminMenu() {
-        System.out.println("Select an option:");
-        System.out.println("1. Find User with ID");
-        System.out.println("2. Show List of Users");
-        System.out.println("3. Delete User");
-        System.out.println("0. Exit");
-        try {
-            int option = scanner.nextInt();
-            switch (option) {
-                case 1: getUserByIdMenu(); break;
-                case 2: getAllUsersMenu(); break;
-                case 3: deleteUserMenu(); break;// Fixed this line
-                default: return;
-            }
-        } catch (InputMismatchException e) {
-            System.out.println("Input must be a number.");
-            scanner.next();
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-    }
-
-    private void UserMenu() {
-        System.out.println("Select an option:");
-        System.out.println("1. Create a User");
-        System.out.println("2. Sign in");
-        System.out.println("0. Exit");
-        try {
-            int option = scanner.nextInt();
-            switch (option) {
-                case 1: createUserMenu(); break;
-                case 2: loginasUser(); break;
-                default: return;
-            }
-        } catch (InputMismatchException e) {
-            System.out.println("Input must be a number.");
-            scanner.next();
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-    }
-
-    private void createUserMenu() {
-        System.out.println("Please enter a username: ");
+    private void registerUser() {
+        System.out.print("Enter username: ");
         String username = scanner.next();
-        System.out.println("Please enter a password: ");
+        System.out.print("Enter password: ");
         String password = scanner.next();
-        System.out.println("Please enter an email: ");
+        System.out.print("Enter email: ");
         String email = scanner.next();
-        System.out.println("Please enter your role(CUSTOMER, SELLER, ADMIN) ");
-        String role = scanner.next();
-
+        System.out.print("Enter role (CUSTOMER, SELLER, or ADMIN): ");
+        String role = scanner.next().toUpperCase();
 
         String response = userController.createUser(username, password, email, role);
         System.out.println(response);
     }
 
-    private void loginasUser() {
-        System.out.println("Enter your username: ");
+    private void loginUser() {
+        System.out.print("Enter your username: ");
         String username = scanner.next();
-        System.out.println("Enter your password: ");
+        System.out.print("Enter your password: ");
         String password = scanner.next();
 
-        boolean isLoggedIn = userController.loginUser(username, password );
-
+        boolean isLoggedIn = userController.loginUser(username, password);
         if (isLoggedIn) {
             System.out.println("Login successful! Welcome, " + username);
-            UserDashboard();
+            String role = userController.getUserRole(username);
+            if (role.equalsIgnoreCase("ADMIN")) {
+                adminMenu();
+            } else if (role.equalsIgnoreCase("SELLER")) {
+                sellerMenu();
+            } else {
+                customerMenu();
+            }
         } else {
             System.out.println("Invalid username or password. Please try again.");
         }
     }
 
-    private void UserDashboard() {
-        System.out.println("Welcome to your user dashboard!");
-        System.out.println("1. View Profile");
-        System.out.println("2. Logout");
-        System.out.println("3. List of categories");
-        System.out.println("4. List of products");
-        System.out.println("0. Exit");
+    private void adminMenu() {
+        while (true) {
+            System.out.println("\nAdmin Menu:");
+            System.out.println("1. Get all users");
+            System.out.println("2. Get user by ID");
+            System.out.println("3. Delete user");
+            System.out.println("4. View all products");
+            System.out.println("0. Logout");
 
-        try {
-            int option = scanner.nextInt();
-            switch (option) {
-                case 1:
-                    System.out.println("Fetching user profile... (Feature in progress)");
-                    break;
-                case 2:
-                    System.out.println("Logging out...");
-                    return;
-                case 3:
-                    getAllCategories(); break;
-                case 4:
-                    getAllProducts(); break;
-                default:
-                    System.out.println("Invalid option.");
+            try {
+                int option = scanner.nextInt();
+                switch (option) {
+                    case 1: System.out.println(userController.getAllUsers()); break;
+                    case 2: getUserById(); break;
+                    case 3: deleteUser(); break;
+                    case 4: System.out.println(productController.getAllProducts()); break;
+                    case 0: return;
+                    default: System.out.println("Invalid option.");
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Input must be a number.");
+                scanner.next();
             }
-        } catch (InputMismatchException e) {
-            System.out.println("Input must be a number.");
-            scanner.next();
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
+        }
+    }
+    private void sellerMenu() {
+        while (true) {
+            System.out.println("\nSeller Menu:");
+            System.out.println("1. View Your Products");
+            System.out.println("2. Add New Product");
+            System.out.println("3. Logout");
+
+            try {
+                int option = scanner.nextInt();
+                switch (option) {
+                    case 1: System.out.println(productController.getSellerProducts()); break;
+                    case 2: System.out.println("Feature in progress: Adding a new product"); break;
+                    case 3: return;
+                    default: System.out.println("Invalid option.");
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Input must be a number.");
+                scanner.next();
+            }
         }
     }
 
-    private void getUserByIdMenu() {
-        System.out.println("Enter user ID: ");
+    private void customerMenu() {
+        while (true) {
+            System.out.println("\nCustomer Menu:");
+            System.out.println("1. View Profile");
+            System.out.println("2. View Categories");
+            System.out.println("3. Browse Products");
+            System.out.println("4. Logout");
+
+            try {
+                int option = scanner.nextInt();
+                switch (option) {
+                    case 1: System.out.println("Fetching user profile... (Feature in progress)"); break;
+                    case 2: System.out.println(categoryController.getAllCategories()); break;
+                    case 3: browseProducts(); break;
+                    case 4: return;
+                    default: System.out.println("Invalid option.");
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Input must be a number.");
+                scanner.next();
+            }
+        }
+    }
+
+    private void browseProducts() {
+        System.out.println("Select a category by ID to view products: ");
+        System.out.println(categoryController.getAllCategories());
+
         try {
-            int id = scanner.nextInt();
-            String response = userController.getUserById(id);
-            System.out.println(response);
+            int categoryId = scanner.nextInt();
+            System.out.println(productController.getProductById(categoryId));
         } catch (InputMismatchException e) {
             System.out.println("ID must be a number.");
             scanner.next();
         }
     }
 
-    private void getAllUsersMenu() {
-        String response = userController.getAllUsers();
-        System.out.println(response);
-    }
-
-    private void deleteUserMenu() {
-        System.out.println("Enter user ID to delete: ");
+    private void getUserById() {
+        System.out.print("Enter user ID: ");
         try {
             int id = scanner.nextInt();
-            String response = userController.deleteUser(id);
-            System.out.println(response);
+            System.out.println(userController.getUserById(id));
         } catch (InputMismatchException e) {
             System.out.println("ID must be a number.");
             scanner.next();
         }
     }
-    private void getAllProducts(){
-        String response = productController.getAllProducts();
-        System.out.println(response);
-    }
 
-    private List<Category> getAllCategories(){
-        String response = categoryController.getAllCategories();
-        System.out.println(response);
-        return null;
-    }
-
-
-    private void mainMenu() {
-        System.out.println();
-        System.out.println("Welcome to Tea store DB!");
-        System.out.println("Select an option:");
-        System.out.println("1. Get all users");
-        System.out.println("2. Get user by ID");
-        System.out.println("3. Create a new user");
-        System.out.println("4. Delete user");
-        System.out.println("5. List of goods (Feature in progress)");
-        System.out.println("0. Exit");
-        System.out.print("Enter option (0-5): ");
-
-    }
-
-    public void runMenu() {
-        Scanner scanner = new Scanner(System.in);
-        List<Category> categories = getAllCategories();
-
-
-        // Получим выбор пользователя
-        System.out.print("Введите цифру от 1 до 6: ");
-        int categoryChoice = scanner.nextInt();
-
-        if (categoryChoice >= 1 && categoryChoice <= 6) {
-            Category selectedCategory = categories.get(categoryChoice - 1);
-            List<Product> products = getProductById(selectedCategory.getId());
-
-            // Показать продукты выбранной категории
-            System.out.println("Продукты в категории " + selectedCategory.getName() + ":");
-            for (Product product : products) {
-                System.out.println(product);
-            }
-        } else {
-            System.out.println("Неверный выбор!");
+    private void deleteUser() {
+        System.out.print("Enter user ID to delete: ");
+        try {
+            int id = scanner.nextInt();
+            System.out.println(userController.deleteUser(id));
+        } catch (InputMismatchException e) {
+            System.out.println("ID must be a number.");
+            scanner.next();
         }
-
-        scanner.close();
     }
-
-    private List<Product> getProductById(int id) {
-        String response = productController.getProductById(id);
-        System.out.println(response);
-        return null;
-    }
-
-
-
 }

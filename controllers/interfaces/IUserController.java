@@ -6,4 +6,6 @@ public interface IUserController {
     String getAllUsers();
     String deleteUser(int id);
     boolean loginUser(String username, String password);
+
+    String getUserRole(String username);
 }

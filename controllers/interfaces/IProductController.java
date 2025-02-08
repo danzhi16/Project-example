@@ -7,4 +7,6 @@ public interface IProductController {
     String getProductById(int id);
     String getAllProducts();
     String deleteProduct(int id);
+
+    boolean getSellerProducts();
 }
