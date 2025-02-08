@@ -41,4 +41,14 @@ public class ProductController implements IProductController {
         boolean deleted = repo.deleteProduct(id);
         return (deleted) ? "Product was deleted" : "Product deletion failed";
     }
+
+    @Override
+    public List<Product> getSellerProducts() {
+        int sellerId = getCurrentSellerId();
+        return repo.getProductsBySellerId(sellerId);
+    }
+
+    private int getCurrentSellerId() {
+        return 1;
+    }
 }
