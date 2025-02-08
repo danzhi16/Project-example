@@ -17,19 +17,33 @@ public class ProductController implements IProductController {
     @Override
     public String createProduct(Product product) {
         boolean created = repo.createProduct(product);
-        return (created) ? "Product was created" : "Product creation failed";
+        return (created) ? "Product was created successfully" : "Product creation failed";
     }
 
     @Override
     public String getProductById(int id) {
-        Product product = (Product) repo.getProductById(id);
-        return (product == null) ? "Product was not found" : product.toString();
+        List<Product> products = repo.getProductById(id); // Получаем список продуктов
+
+        if (products.isEmpty()) {
+            return "No products found for this category.";
+        }
+
+        StringBuilder response = new StringBuilder("Products in category:\n");
+        for (Product product : products) {
+            response.append(product.toString()).append("\n");
+        }
+
+        return response.toString();
     }
 
     @Override
     public String getAllProducts() {
         List<Product> products = repo.getAllProducts();
-        StringBuilder response = new StringBuilder();
+        if (products.isEmpty()) {
+            return "No products available.";
+        }
+
+        StringBuilder response = new StringBuilder("All Products:\n");
         for (Product product : products) {
             response.append(product.toString()).append("\n");
         }
@@ -39,16 +53,11 @@ public class ProductController implements IProductController {
     @Override
     public String deleteProduct(int id) {
         boolean deleted = repo.deleteProduct(id);
-        return (deleted) ? "Product was deleted" : "Product deletion failed";
+        return (deleted) ? "Product was deleted successfully" : "Product deletion failed";
     }
 
     @Override
-    public List<Product> getSellerProducts() {
-        int sellerId = getCurrentSellerId();
-        return repo.getProductsBySellerId(sellerId);
-    }
-
-    private int getCurrentSellerId() {
-        return 1;
+    public boolean getSellerProducts() {
+        return false; // TODO: Implement seller-specific product fetching logic
     }
 }

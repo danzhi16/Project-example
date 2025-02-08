@@ -9,8 +9,6 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
 
-import static org.postgresql.PGProperty.PASSWORD;
-import static org.postgresql.jdbc.EscapedFunctions.USER;
 
 public class Category implements ICategory {
     private static List<Category> categories = new ArrayList<>();

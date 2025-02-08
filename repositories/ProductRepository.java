@@ -118,6 +118,11 @@ public class ProductRepository implements IProductRepository {
         return false;
     }
 
+    @Override
+    public List<Product> getProductsBySellerId(int sellerId) {
+        return List.of();
+    }
+
     private boolean isValidProduct(Product product) {
         return product != null &&
                 product.getName() != null && !product.getName().trim().isEmpty() &&

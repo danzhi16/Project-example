@@ -56,4 +56,9 @@ public class UserController implements IUserController {
         }
         return user.getPassword().equals(password);
     }
+
+    @Override
+    public String getUserRole(String username) {
+        return "";
+    }
 }

@@ -8,5 +8,8 @@ public interface IProductRepository {
     boolean createProduct(Product product);
     List<Product> getProductById(int id);
     List<Product> getAllProducts();
-    boolean deleteProduct(int id);}
+    boolean deleteProduct(int id);
+
+    List<Product> getProductsBySellerId(int sellerId);
+}
 
