@@ -23,15 +23,16 @@ public class MyApplication {
 
     public void start() {
         while (true) {
-            mainMenu();
             try {
+                System.out.println("Welcome to Tea store DB!");
+                System.out.println("Select an option:");
+                System.out.println("1. Log in as admin");
+                System.out.println("2. Log in as user");
+                System.out.println("0. Exit");
                 int option = scanner.nextInt();
                 switch (option) {
-                    case 1: getAllUsersMenu(); break;
-                    case 2: getUserByIdMenu(); break;
-                    case 3: createUserMenu(); break;
-                    case 4: deleteUserMenu(); break;
-                    case 5: runMenu(); break;
+                    case 1: AdminMenu(); break;
+                    case 2: UserMenu(); break;
                     default: return;
                 }
             } catch (InputMismatchException e) {
