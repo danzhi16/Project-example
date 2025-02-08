@@ -1,0 +1,47 @@
+Index: models/Product.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package models;\n\nimport models.interfaces.IProduct;\nimport java.util.ArrayList;\nimport java.util.List;\nimport java.util.Optional;\n\npublic class Product implements IProduct {\n    private static List<Product> products = new ArrayList<>();\n    private static int idCounter = 1;\n\n    private int id;\n    private String name;\n    private String description;\n    private int categoryId;\n    private double price;\n\n    public Product(int id, String name, String description, String categoryId, double price) {}\n\n    public Product(int id, String name, String description, int categoryId, double price, String categoryName) {\n        this.id = idCounter++;\n        this.name = name;\n        this.description = description;\n        this.categoryId = categoryId;\n        this.price = price;\n        products.add(this);\n    }\n\n    public Product(int id, String name, String description, int categoryId, double price) {\n        this.id = id;\n        this.name = name;\n        this.description = description;\n        this.categoryId = categoryId;\n        this.price = price;\n    }\n\n    @Override\n    public Product createProduct(String name, String description, int categoryId, double price) {\n        return new Product(rs.getInt(\"id\"), name, description, categoryId, price, rs.getString(\"category_name\"));\n    }\n\n    @Override\n    public Product getProductById(int id) {\n        Optional<Product> product = products.stream().filter(p -> p.getId() == id).findFirst();\n        return product.orElse(null);\n    }\n\n    @Override\n    public List<Product> getAllProducts() {\n        return new ArrayList<>(products);\n    }\n\n    @Override\n    public boolean updateProduct(int id, String name, String description, int categoryId, double price) {\n        for (Product product : products) {\n            if (product.getId() == id) {\n                product.setName(name);\n                product.setDescription(description);\n                product.setCategoryId(categoryId);\n                product.setPrice(price);\n                return true;\n            }\n        }\n        return false;\n    }\n\n    @Override\n    public boolean deleteProduct(int id) {\n        return products.removeIf(product -> product.getId() == id);\n    }\n\n    public int getId() {\n        return id;\n    }\n\n    public String getName() {\n        return name;\n    }\n\n    public void setName(String name) {\n        this.name = name;\n    }\n\n    public String getDescription() {\n        return description;\n    }\n\n    public void setDescription(String description) {\n        this.description = description;\n    }\n\n    public int getCategoryId() {\n        return categoryId;\n    }\n\n    public void setCategoryId(int categoryId) {\n        this.categoryId = categoryId;\n    }\n\n    public double getPrice() {\n        return price;\n    }\n\n    public void setPrice(double price) {\n        this.price = price;\n    }\n\n    @Override\n    public String toString() {\n        return \"Product{\" +\n                \"id=\" + id +\n                \", name='\" + name + '\\'' +\n                \", description='\" + description + '\\'' +\n                \", categoryId=\" + categoryId +\n                \", price=\" + price +\n                '}';\n    }\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/models/Product.java b/models/Product.java
+--- a/models/Product.java	(revision 9883d017be580a6bcd76def6bb03ae5c7e86390a)
++++ b/models/Product.java	(date 1738911471779)
+@@ -17,7 +17,7 @@
+ 
+     public Product(int id, String name, String description, String categoryId, double price) {}
+ 
+-    public Product(int id, String name, String description, int categoryId, double price, String categoryName) {
++    public Product(int id, String name, String description, int categoryId, double price) {
+         this.id = idCounter++;
+         this.name = name;
+         this.description = description;
+@@ -36,7 +36,7 @@
+ 
+     @Override
+     public Product createProduct(String name, String description, int categoryId, double price) {
+-        return new Product(rs.getInt("id"), name, description, categoryId, price, rs.getString("category_name"));
++        return new Product(id, name, description, categoryId, price);
+     }
+ 
+     @Override
+Index: .idea/misc.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<project version=\"4\">\n  <component name=\"ProjectRootManager\" version=\"2\" languageLevel=\"JDK_23_PREVIEW\" project-jdk-name=\"openjdk-23\" project-jdk-type=\"JavaSDK\">\n    <output url=\"file://$PROJECT_DIR$/out\" />\n  </component>\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/misc.xml b/.idea/misc.xml
+--- a/.idea/misc.xml	(revision 9883d017be580a6bcd76def6bb03ae5c7e86390a)
++++ b/.idea/misc.xml	(date 1738911138754)
+@@ -1,6 +1,6 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <project version="4">
+-  <component name="ProjectRootManager" version="2" languageLevel="JDK_23_PREVIEW" project-jdk-name="openjdk-23" project-jdk-type="JavaSDK">
++  <component name="ProjectRootManager" version="2" languageLevel="JDK_23" default="true" project-jdk-name="openjdk-23" project-jdk-type="JavaSDK">
+     <output url="file://$PROJECT_DIR$/out" />
+   </component>
+ </project>
+\ No newline at end of file

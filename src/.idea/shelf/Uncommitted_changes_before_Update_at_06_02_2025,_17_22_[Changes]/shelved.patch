@@ -1,0 +1,54 @@
+Index: .idea/dataSources.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<project version=\"4\">\n  <component name=\"DataSourceManagerImpl\" format=\"xml\" multifile-model=\"true\">\n    <data-source source=\"LOCAL\" name=\"tea_shop\" uuid=\"ce8a06ce-5f84-42a5-84a2-9d69558b41b6\">\n      <driver-ref>postgresql</driver-ref>\n      <synchronize>true</synchronize>\n      <jdbc-driver>org.postgresql.Driver</jdbc-driver>\n      <jdbc-url>jdbc:postgresql://localhost:5432/tea_shop</jdbc-url>\n      <jdbc-additional-properties>\n        <property name=\"com.intellij.clouds.kubernetes.db.host.port\" />\n        <property name=\"com.intellij.clouds.kubernetes.db.enabled\" value=\"false\" />\n        <property name=\"com.intellij.clouds.kubernetes.db.container.port\" />\n      </jdbc-additional-properties>\n      <working-dir>$ProjectFileDir$</working-dir>\n    </data-source>\n    <data-source source=\"LOCAL\" name=\"postgres@localhost\" uuid=\"6ffd5931-c82d-4c82-beb5-0992d74c71df\">\n      <driver-ref>postgresql</driver-ref>\n      <synchronize>true</synchronize>\n      <jdbc-driver>org.postgresql.Driver</jdbc-driver>\n      <jdbc-url>jdbc:postgresql://localhost:5432/postgres</jdbc-url>\n      <jdbc-additional-properties>\n        <property name=\"com.intellij.clouds.kubernetes.db.host.port\" />\n        <property name=\"com.intellij.clouds.kubernetes.db.enabled\" value=\"false\" />\n        <property name=\"com.intellij.clouds.kubernetes.db.container.port\" />\n      </jdbc-additional-properties>\n      <working-dir>$ProjectFileDir$</working-dir>\n    </data-source>\n  </component>\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/dataSources.xml b/.idea/dataSources.xml
+--- a/.idea/dataSources.xml	(revision ce27800ace95e53ff21d3dde30263d8734bf23fd)
++++ b/.idea/dataSources.xml	(date 1738843246237)
+@@ -1,23 +1,11 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <project version="4">
+   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
+-    <data-source source="LOCAL" name="tea_shop" uuid="ce8a06ce-5f84-42a5-84a2-9d69558b41b6">
++    <data-source source="LOCAL" name="tea_shop@localhost" uuid="ce8a06ce-5f84-42a5-84a2-9d69558b41b6">
+       <driver-ref>postgresql</driver-ref>
+       <synchronize>true</synchronize>
+       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+       <jdbc-url>jdbc:postgresql://localhost:5432/tea_shop</jdbc-url>
+-      <jdbc-additional-properties>
+-        <property name="com.intellij.clouds.kubernetes.db.host.port" />
+-        <property name="com.intellij.clouds.kubernetes.db.enabled" value="false" />
+-        <property name="com.intellij.clouds.kubernetes.db.container.port" />
+-      </jdbc-additional-properties>
+-      <working-dir>$ProjectFileDir$</working-dir>
+-    </data-source>
+-    <data-source source="LOCAL" name="postgres@localhost" uuid="6ffd5931-c82d-4c82-beb5-0992d74c71df">
+-      <driver-ref>postgresql</driver-ref>
+-      <synchronize>true</synchronize>
+-      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+-      <jdbc-url>jdbc:postgresql://localhost:5432/postgres</jdbc-url>
+       <jdbc-additional-properties>
+         <property name="com.intellij.clouds.kubernetes.db.host.port" />
+         <property name="com.intellij.clouds.kubernetes.db.enabled" value="false" />
+Index: out/production/Project-example/.idea/dataSources.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<project version=\"4\">\n  <component name=\"DataSourceManagerImpl\" format=\"xml\" multifile-model=\"true\">\n    <data-source source=\"LOCAL\" name=\"tea_shop@localhost\" uuid=\"ce8a06ce-5f84-42a5-84a2-9d69558b41b6\">\n      <driver-ref>postgresql</driver-ref>\n      <synchronize>true</synchronize>\n      <jdbc-driver>org.postgresql.Driver</jdbc-driver>\n      <jdbc-url>jdbc:postgresql://localhost:5432/tea_shop</jdbc-url>\n      <jdbc-additional-properties>\n        <property name=\"com.intellij.clouds.kubernetes.db.host.port\" />\n        <property name=\"com.intellij.clouds.kubernetes.db.enabled\" value=\"false\" />\n        <property name=\"com.intellij.clouds.kubernetes.db.container.port\" />\n      </jdbc-additional-properties>\n      <working-dir>$ProjectFileDir$</working-dir>\n    </data-source>\n    <data-source source=\"LOCAL\" name=\"postgres@localhost\" uuid=\"6ffd5931-c82d-4c82-beb5-0992d74c71df\">\n      <driver-ref>postgresql</driver-ref>\n      <synchronize>true</synchronize>\n      <jdbc-driver>org.postgresql.Driver</jdbc-driver>\n      <jdbc-url>jdbc:postgresql://localhost:5432/postgres</jdbc-url>\n      <jdbc-additional-properties>\n        <property name=\"com.intellij.clouds.kubernetes.db.host.port\" />\n        <property name=\"com.intellij.clouds.kubernetes.db.enabled\" value=\"false\" />\n        <property name=\"com.intellij.clouds.kubernetes.db.container.port\" />\n      </jdbc-additional-properties>\n      <working-dir>$ProjectFileDir$</working-dir>\n    </data-source>\n  </component>\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/out/production/Project-example/.idea/dataSources.xml b/out/production/Project-example/.idea/dataSources.xml
+--- a/out/production/Project-example/.idea/dataSources.xml	(revision ce27800ace95e53ff21d3dde30263d8734bf23fd)
++++ b/out/production/Project-example/.idea/dataSources.xml	(date 1738842703129)
+@@ -1,7 +1,7 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <project version="4">
+   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
+-    <data-source source="LOCAL" name="tea_shop@localhost" uuid="ce8a06ce-5f84-42a5-84a2-9d69558b41b6">
++    <data-source source="LOCAL" name="tea_shop" uuid="ce8a06ce-5f84-42a5-84a2-9d69558b41b6">
+       <driver-ref>postgresql</driver-ref>
+       <synchronize>true</synchronize>
+       <jdbc-driver>org.postgresql.Driver</jdbc-driver>

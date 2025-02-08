@@ -1,0 +1,18 @@
+<changelist name="Uncommitted_changes_before_Update_at_06_02_2025,_17_22_[Changes]" date="1738844610985" recycled="true" deleted="true">
+  <option name="PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_06_02_2025,_17_22_[Changes]/shelved.patch" />
+  <option name="DESCRIPTION" value="Uncommitted changes before Update at 06.02.2025, 17:22 [Changes]" />
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/Project-example/Product.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/Project-example/Shop.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/Project-example/Data/Interfaces/IDB.class" />
+    <option name="AFTER_PATH" value="out/production/Project-example/Data/Interfaces/IDB.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_06_02_2025,_17_22_[Changes]/IDB.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/Project-example/Cart.class" />
+  </binary>
+</changelist>
