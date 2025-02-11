@@ -1,35 +1,29 @@
 package models;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.Serializable;
 
-public class User {
-    private static int idCounter = 1;
+public class User implements Serializable { // Добавили Serializable
+    private static final long serialVersionUID = 1L; // Версия класса для сериализации
+
     private int id;
     private String username;
     private String password;
     private String email;
     private Role role;
 
-    public static List<User> users = new ArrayList<>();
-
-    // Конструктор без id (для создания нового пользователя)
-    public User(String username, String password, String email, Role role) {
-        this.id = idCounter++;
-        this.username = username;
+    public User(int username, String password, String email, String role) {
+        this.username = String.valueOf(username);
         this.password = password;
         this.email = email;
-        this.role = role;
-        users.add(this);
+        this.role = Role.valueOf(role);
     }
 
-    // Новый конструктор с id (чтобы загружать пользователей из БД)
-    public User(int id, String username, String password, String email, Role role) {
-        this.id = id;
-        this.username = username;
-        this.password = password;
-        this.email = email;
-        this.role = role;
+    public User(String username, String password, String email, Role role) {
+
+    }
+
+    private static int generateUserId() {
+        return (int) (Math.random() * 10000); // Генерация случайного ID
     }
 
     public int getId() {
@@ -52,12 +46,11 @@ public class User {
         return role;
     }
 
-    public void setRole(Role role) {
-        this.role = role;
-    }
     @Override
     public String toString() {
-        return "ID: " + id + ", Username: " + username + ", Email: " + email + ", Role: " + role;
+        return "[ID: " + id + ", Username: " + username + ", Email: " + email + ", Role: " + role + "]";
     }
 
+    public void setId(int anInt) {
+    }
 }

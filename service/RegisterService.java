@@ -1,40 +1,23 @@
 package service;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.util.Properties;
+import java.io.*;
 import java.util.Scanner;
 import models.User;
 import models.Role;
-import service.UserService;
+import java.util.ArrayList;
+import java.util.List;
 
 public class RegisterService {
-    private static String ADMIN_PASSWORD;
+    private static final String FILE_NAME = "users.txt";
+    private static List<User> users = new ArrayList<>();
 
     static {
-        try {
-            Properties properties = new Properties();
-            properties.load(new FileInputStream("config.properties"));
-            ADMIN_PASSWORD = properties.getProperty("admin.password");
-            System.out.println("DEBUG: Admin password loaded: " + ADMIN_PASSWORD); // Проверка загрузки пароля
-        } catch (IOException e) {
-            System.out.println("Error loading config file: " + e.getMessage());
-            ADMIN_PASSWORD = "defaultAdminPassword"; // Запасной пароль
-        }
+        loadUsers(); // Загружаем пользователей при старте
     }
 
     public static void registerUser(Scanner scanner) {
-        System.out.print("Enter username: ");
-        String username = scanner.nextLine();
-
-        System.out.print("Enter password: ");
-        String password = scanner.nextLine();
-
-        System.out.print("Enter email: ");
-        String email = scanner.nextLine();
-
         System.out.print("Enter role (CUSTOMER, SELLER, or ADMIN): ");
-        String roleInput = scanner.nextLine().toUpperCase();
+        String roleInput = scanner.next().toUpperCase();
 
         Role role;
         try {
@@ -44,23 +27,67 @@ public class RegisterService {
             return;
         }
 
-        // **Исправленная проверка**
         if (role == Role.ADMIN) {
-            System.out.print("Enter admin password: "); // Теперь реально запрашивает
-            String adminPassword = scanner.nextLine();
+            System.out.print("Enter admin password: ");
+            String adminPassword = scanner.next();
 
-            System.out.println("DEBUG: Entered admin password: " + adminPassword);
-            System.out.println("DEBUG: Correct admin password: " + ADMIN_PASSWORD);
-
-            if (!adminPassword.equals(ADMIN_PASSWORD)) {
+            if (!AdminService.verifyAdminPassword(adminPassword)) {
                 System.out.println("Incorrect admin password! Registration failed.");
                 return;
             }
         }
 
-        // **Создание пользователя после успешной проверки**
+        scanner.nextLine(); // Чистим буфер
+
+        System.out.print("Enter username: ");
+        String username = scanner.nextLine();
+
+        if (findUserByUsername(username) != null) {
+            System.out.println("Username already taken! Registration failed.");
+            return;
+        }
+
+        System.out.print("Enter password: ");
+        String password = scanner.nextLine();
+
+        System.out.print("Enter email: ");
+        String email = scanner.nextLine();
+
         User newUser = new User(username, password, email, role);
-        UserService.addUser(newUser);
+        users.add(newUser);
+        saveUsers(); // Сохраняем всех пользователей в файл
         System.out.println("Registration successful! User ID: " + newUser.getId());
+    }
+
+    public static User findUserByUsername(String username) {
+        for (User user : users) {
+            if (user.getUsername().equalsIgnoreCase(username)) {
+                return user;
+            }
+        }
+        return null;
+    }
+
+    public static List<User> getAllUsers() {
+        return users;
+    }
+
+    private static void saveUsers() {
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(FILE_NAME))) {
+            oos.writeObject(users);
+        } catch (IOException e) {
+            System.out.println("Error saving users: " + e.getMessage());
+        }
+    }
+
+    private static void loadUsers() {
+        File file = new File(FILE_NAME);
+        if (!file.exists()) return;
+
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(FILE_NAME))) {
+            users = (List<User>) ois.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            System.out.println("Error loading users: " + e.getMessage());
+        }
     }
 }
