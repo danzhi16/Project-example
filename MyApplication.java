@@ -1,6 +1,7 @@
 import controllers.interfaces.IProductController;
 import controllers.interfaces.IUserController;
 import controllers.interfaces.ICategoryController;
+
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -144,8 +145,8 @@ public class MyApplication {
 
     private void customerMenu() {
         while (true) {
-            System.out.println("\nCustomer Menu:");
-            System.out.println("1. View Profile");
+            System.out.println("\n🛒 Customer Menu:");
+            System.out.println("1. View Cart");
             System.out.println("2. View Categories");
             System.out.println("3. Browse Products by Category");
             System.out.println("0. Logout");
@@ -154,11 +155,11 @@ public class MyApplication {
                 int option = scanner.nextInt();
                 scanner.nextLine();
                 switch (option) {
-                    case 1 -> viewProfile();
+                    case 1 -> models.Cart.viewCart();
                     case 2 -> System.out.println(categoryController.getAllCategories());
                     case 3 -> browseProducts();
                     case 0 -> {
-                        System.out.println("Logging out...");
+                        System.out.println("🚪 Logging out...");
                         return;
                     }
                     default -> System.out.println("❌ Invalid option.");
@@ -167,6 +168,25 @@ public class MyApplication {
                 System.out.println("❌ Error: Enter a number.");
                 scanner.nextLine();
             }
+        }
+    }
+
+    private void browseProducts() {
+        System.out.println("Enter category ID:");
+        System.out.println(categoryController.getAllCategories());
+        try {
+            int categoryId = scanner.nextInt();
+            scanner.nextLine();
+            System.out.println(productController.getProductsByCategory(categoryId));
+
+            System.out.println("\nWould you like to add a product to your cart? (yes/no)");
+            String response = scanner.nextLine().trim().toLowerCase();
+            if (response.equals("yes")) {
+                models.Cart.addToCart();
+            }
+        } catch (InputMismatchException e) {
+            System.out.println("❌ Error: ID must be a number.");
+            scanner.nextLine();
         }
     }
 
@@ -218,16 +238,5 @@ public class MyApplication {
         }
     }
 
-    private void browseProducts() {
-        System.out.println("Select a category by ID:");
-        System.out.println(categoryController.getAllCategories());
-        try {
-            int categoryId = scanner.nextInt();
-            scanner.nextLine();
-            System.out.println(productController.getProductsByCategory(categoryId));
-        } catch (InputMismatchException e) {
-            System.out.println("❌ Error: ID must be a number.");
-            scanner.nextLine();
-        }
-    }
+
 }

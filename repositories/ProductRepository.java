@@ -127,7 +127,8 @@ public class ProductRepository implements IProductRepository {
     @Override
     public List<Product> getProductsByCategory(int categoryId) {
         List<Product> products = new ArrayList<>();
-        String sql = "SELECT * FROM products WHERE category_id = ?";
+        String sql = "SELECT DISTINCT * FROM products WHERE category_id = ?";
+
         try (Connection conn = db.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
@@ -144,10 +145,11 @@ public class ProductRepository implements IProductRepository {
                 ));
             }
         } catch (SQLException e) {
-            System.out.println("❌ SQL Error while fetching products by category: " + e.getMessage());
+            System.out.println("❌ SQL Error while fetching products: " + e.getMessage());
         }
         return products;
     }
+
 
     @Override
     public List<Product> getSellerProducts() {
