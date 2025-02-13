@@ -57,6 +57,11 @@ public class Category implements ICategory {
         return categories.removeIf(category -> category.getId() == id);
     }
 
+    @Override
+    public void setId(int anInt) {
+
+    }
+
     public int getId() {
         return id;
     }

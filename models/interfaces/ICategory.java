@@ -9,4 +9,6 @@ public interface ICategory {
     List<Category> getAllCategories();
     boolean updateCategory(int id, String name);
     boolean deleteCategory(int id);
+
+    void setId(int anInt);
 }

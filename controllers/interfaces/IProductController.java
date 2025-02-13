@@ -7,5 +7,9 @@ public interface IProductController {
     String getProductById(int id);
     String getAllProducts();
     String deleteProduct(int id);
-    boolean getSellerProducts();
+    String getSellerProducts();
+
+    String addProduct(String name, double price, String category);
+
+    String getProductsByCategory(int categoryId);
 }

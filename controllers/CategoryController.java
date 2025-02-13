@@ -16,23 +16,32 @@ public class CategoryController implements ICategoryController {
 
     @Override
     public String createCategory(int id, String name) {
+        if (name == null || name.trim().isEmpty()) {
+            return "❌ Error: Category name cannot be empty.";
+        }
+
         Category category = new Category(id, name);
         boolean created = repo.createCategory(category);
-        return (created) ? "Category was created" : "Category creation failed";
+        return created ? "✅ Category created: " + name : "❌ Error creating category.";
     }
 
     @Override
     public String getCategoryById(int id) {
         Category category = repo.getCategoryById(id);
-        return (category == null) ? "Category was not found" : category.toString();
+        return (category != null) ? "Category found:\n" + category : "Category not found.";
     }
 
     @Override
     public String getAllCategories() {
         List<Category> categories = repo.getAllCategories();
-        StringBuilder response = new StringBuilder();
+        if (categories.isEmpty()) {
+            return "No categories available.";
+        }
+
+        StringBuilder response = new StringBuilder("Available categories:\n");
         for (Category category : categories) {
-            response.append(category.toString()).append("\n");
+            response.append("ID: ").append(category.getId())
+                    .append(", Name: ").append(category.getName()).append("\n");
         }
         return response.toString();
     }
@@ -40,6 +49,6 @@ public class CategoryController implements ICategoryController {
     @Override
     public String deleteCategory(int id) {
         boolean deleted = repo.deleteCategory(id);
-        return (deleted) ? "Category was deleted" : "Category deletion failed";
+        return deleted ? "✅ Category deleted." : "❌ Error deleting category.";
     }
 }

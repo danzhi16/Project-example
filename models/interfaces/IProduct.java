@@ -11,4 +11,6 @@ public interface IProduct {
     List<Product> getAllProducts();
     boolean updateProduct(int id, String name, String description, double price, int categoryId);
     boolean deleteProduct(int id);
+
+    void setId(int anInt);
 }

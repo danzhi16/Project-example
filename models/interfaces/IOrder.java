@@ -10,4 +10,6 @@ public interface IOrder {
     List<Order> getAllOrders();
     boolean updateOrder(int id, Date date, int userId, String address);
     boolean deleteOrder(int id);
+
+    void setId(int anInt);
 }

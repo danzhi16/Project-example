@@ -2,8 +2,8 @@ package models;
 
 import java.io.Serializable;
 
-public class User implements Serializable { // Добавили Serializable
-    private static final long serialVersionUID = 1L; // Версия класса для сериализации
+public class User implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     private int id;
     private String username;
@@ -11,27 +11,37 @@ public class User implements Serializable { // Добавили Serializable
     private String email;
     private Role role;
 
-    public User(int username, String password, String email, String role) {
-        this.username = String.valueOf(username);
+    // Конструктор для нового пользователя (ID назначается в БД)
+    public User(String username, String password, String email, Role role) {
+        this.username = username;
         this.password = password;
         this.email = email;
-        this.role = Role.valueOf(role);
+        this.role = role;
     }
 
-    public User(String username, String password, String email, Role role) {
-
-    }
-
-    private static int generateUserId() {
-        return (int) (Math.random() * 10000); // Генерация случайного ID
+    // Конструктор для загрузки из БД (с ID)
+    public User(int id, String username, String password, String email, Role role) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.role = role;
     }
 
     public int getId() {
         return id;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public String getUsername() {
         return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {
@@ -42,6 +52,10 @@ public class User implements Serializable { // Добавили Serializable
         return email;
     }
 
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     public Role getRole() {
         return role;
     }
@@ -49,8 +63,5 @@ public class User implements Serializable { // Добавили Serializable
     @Override
     public String toString() {
         return "[ID: " + id + ", Username: " + username + ", Email: " + email + ", Role: " + role + "]";
-    }
-
-    public void setId(int anInt) {
     }
 }

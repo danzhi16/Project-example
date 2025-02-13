@@ -1,107 +1,110 @@
 package controllers;
 
 import controllers.interfaces.IUserController;
-import models.Role;
 import models.User;
 import repositories.interfaces.IUserRepository;
+import models.Role;
 
 import java.util.List;
 
 public class UserController implements IUserController {
     private final IUserRepository repo;
-    private static final String ADMIN_PASSWORD = "artyomgenius"; // Пароль админа
+    private static final String ADMIN_PASSWORD = "artyomgenius";
 
     public UserController(IUserRepository repo) {
         this.repo = repo;
     }
 
-    // Метод для создания пользователя с возможностью регистрировать ADMIN
     @Override
     public String createUser(String username, String password, String email, String role, String adminPassword) {
-        try {
-            Role userRole = Role.valueOf(role.toUpperCase()); // Приводим строку к enum
+        if (username == null || username.trim().isEmpty() ||
+                password == null || password.trim().isEmpty() ||
+                email == null || email.trim().isEmpty() ||
+                role == null || role.trim().isEmpty()) {
+            return "❌ Error: All fields are required.";
+        }
 
-            // Проверка пароля при регистрации ADMIN
-            if (userRole == Role.ADMIN) {
-                if (!verifyAdminPassword(adminPassword)) {
-                    return "Incorrect admin password! Registration failed.";
-                }
+        if (repo.getUserByUsername(username) != null) {
+            return "❌ Error: A user with this username already exists.";
+        }
+
+        try {
+            Role userRole = Role.valueOf(role.toUpperCase());
+
+            if (userRole == Role.ADMIN && !verifyAdminPassword(adminPassword)) {
+                return "❌ Error: Incorrect admin password.";
             }
 
-            // Создаём пользователя без ID, потому что ID присваивается в БД
             User user = new User(username, password, email, userRole);
-
-            boolean created = repo.createUser(user); // Записываем в БД
-
-            return created ? "User was created successfully" : "User creation failed";
+            boolean created = repo.createUser(user);
+            return created ? "✅ User successfully created: " + username : "❌ Error creating user.";
         } catch (IllegalArgumentException e) {
-            return "Invalid role! Please use CUSTOMER, SELLER, or ADMIN.";
+            return "❌ Error: Invalid role. Use CUSTOMER, SELLER, or ADMIN.";
         }
     }
 
-    // Получение пользователя по ID
     @Override
     public User getUserById(int id) {
         return repo.getUserById(id);
     }
 
-    // Получение всех пользователей
     @Override
     public String getAllUsers() {
         List<User> users = repo.getAllUsers();
         if (users.isEmpty()) return "No users found.";
 
-        StringBuilder sb = new StringBuilder();
+        StringBuilder sb = new StringBuilder("User list:\n");
         for (User user : users) {
-            sb.append("ID: ").append(user.getId())
-                    .append(", Username: ").append(user.getUsername())
-                    .append(", Email: ").append(user.getEmail())
-                    .append(", Role: ").append(user.getRole()).append("\n");
+            sb.append(user).append("\n");
         }
         return sb.toString();
     }
 
-    // Удаление пользователя (только для ADMIN)
     @Override
     public String deleteUser(int id) {
         User user = repo.getUserById(id);
-        if (user == null) return "User not found.";
+        if (user == null) return "Error: User not found.";
 
         boolean deleted = repo.deleteUser(id);
-        return deleted ? "User deleted successfully." : "Failed to delete user.";
+        return deleted ? "✅ User deleted." : "❌ Error deleting user.";
     }
 
-    // Логин пользователя
     @Override
     public boolean loginUser(String username, String password) {
         User user = repo.getUserByUsername(username);
-        if (user == null) {
-            System.out.println("DEBUG: User not found - " + username);
-            return false;
-        }
-
-        System.out.println("DEBUG: Stored password = " + user.getPassword());
-        System.out.println("DEBUG: Entered password = " + password);
-
-        if (user.getPassword().equals(password)) {
-            return true;
-        } else {
-            System.out.println("DEBUG: Password mismatch!");
-            return false;
-        }
+        return user != null && user.getPassword().equals(password);
     }
 
-
-    // Получение роли пользователя по имени
     @Override
     public String getUserRole(String username) {
         User user = repo.getUserByUsername(username);
-        return (user != null) ? user.getRole().name() : "User not found.";
+        return (user != null) ? user.getRole().name() : "Error: User not found.";
     }
 
-    // Проверка пароля админа
     @Override
     public boolean verifyAdminPassword(String adminPassword) {
         return ADMIN_PASSWORD.equals(adminPassword.trim());
+    }
+
+    public String updateUser(int id, String newUsername, String newEmail) {
+        User user = repo.getUserById(id);
+        if (user == null) {
+            return "Error: User not found.";
+        }
+
+        if (newUsername != null && !newUsername.trim().isEmpty()) {
+            user.setUsername(newUsername);
+        }
+
+        if (newEmail != null && !newEmail.trim().isEmpty()) {
+            user.setEmail(newEmail);
+        }
+
+        return repo.updateUser(user) ? "✅ User data updated." : "❌ Error updating user data.";
+    }
+
+    public String viewProfile(String username) {
+        User user = repo.getUserByUsername(username);
+        return (user != null) ? "Profile:\n" + user : "Error: User not found.";
     }
 }

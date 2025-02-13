@@ -1,11 +1,8 @@
 import controllers.interfaces.IProductController;
 import controllers.interfaces.IUserController;
 import controllers.interfaces.ICategoryController;
-import models.Category;
-import models.Product;
-import service.AdminService;
-
-import java.util.*;
+import java.util.InputMismatchException;
+import java.util.Scanner;
 
 public class MyApplication {
     private final IUserController userController;
@@ -21,33 +18,36 @@ public class MyApplication {
 
     public void start() {
         while (true) {
-            System.out.println("Welcome! Please select an option:");
+            System.out.println("Welcome! Choose an option:");
             System.out.println("1. Register");
             System.out.println("2. Sign In");
             System.out.println("0. Exit");
 
             try {
                 int option = scanner.nextInt();
-                scanner.nextLine(); // Очистка буфера
+                scanner.nextLine();
                 switch (option) {
-                    case 1: registerUser(); break;
-                    case 2: loginUser(); break;
-                    case 0: return;
-                    default: System.out.println("Invalid option. Try again.");
+                    case 1 -> registerUser();
+                    case 2 -> loginUser();
+                    case 0 -> {
+                        System.out.println("Goodbye!");
+                        return;
+                    }
+                    default -> System.out.println("❌ Invalid option. Try again.");
                 }
             } catch (InputMismatchException e) {
-                System.out.println("Input must be a number.");
+                System.out.println("❌ Error: Enter a number.");
                 scanner.nextLine();
             }
         }
     }
 
     private void registerUser() {
-        System.out.print("Enter role (CUSTOMER, SELLER, or ADMIN): ");
+        System.out.print("Enter role (CUSTOMER, SELLER, ADMIN): ");
         String role = scanner.nextLine().trim().toUpperCase();
 
-        String adminPassword = ""; // По умолчанию пустой, заполняется только для ADMIN
-        if (role.equals("ADMIN")) {
+        String adminPassword = "";
+        if ("ADMIN".equals(role)) {
             System.out.print("Enter admin password: ");
             adminPassword = scanner.nextLine().trim();
         }
@@ -65,35 +65,32 @@ public class MyApplication {
         System.out.println(response);
     }
 
-
-
     private void loginUser() {
         System.out.print("Enter your username: ");
-        String username = scanner.next();
+        String username = scanner.nextLine().trim();
         System.out.print("Enter your password: ");
-        String password = scanner.next();
+        String password = scanner.nextLine().trim();
 
         boolean isLoggedIn = userController.loginUser(username, password);
         if (isLoggedIn) {
             System.out.println("Login successful! Welcome, " + username);
             String role = userController.getUserRole(username);
-            if (role.equalsIgnoreCase("ADMIN")) {
-                adminMenu();
-            } else if (role.equalsIgnoreCase("SELLER")) {
-                sellerMenu();
-            } else {
-                customerMenu();
+            switch (role.toUpperCase()) {
+                case "ADMIN" -> adminMenu();
+                case "SELLER" -> sellerMenu();
+                case "CUSTOMER" -> customerMenu();
+                default -> System.out.println("❌ Error: Unknown role.");
             }
         } else {
-            System.out.println("Invalid username or password. Please try again.");
+            System.out.println("❌ Incorrect username or password.");
         }
     }
 
     private void adminMenu() {
         while (true) {
             System.out.println("\nAdmin Menu:");
-            System.out.println("1. Get all users");
-            System.out.println("2. Get user by ID");
+            System.out.println("1. View all users");
+            System.out.println("2. Find user by ID");
             System.out.println("3. Delete user");
             System.out.println("4. View all products");
             System.out.println("0. Logout");
@@ -102,15 +99,18 @@ public class MyApplication {
                 int option = scanner.nextInt();
                 scanner.nextLine();
                 switch (option) {
-                    case 1: System.out.println(userController.getAllUsers()); break;
-                    case 2: getUserById(); break;
-                    case 3: deleteUser(); break;
-                    case 4: System.out.println(productController.getAllProducts()); break;
-                    case 0: return;
-                    default: System.out.println("Invalid option.");
+                    case 1 -> System.out.println(userController.getAllUsers());
+                    case 2 -> getUserById();
+                    case 3 -> deleteUser();
+                    case 4 -> System.out.println(productController.getAllProducts());
+                    case 0 -> {
+                        System.out.println("Logging out...");
+                        return;
+                    }
+                    default -> System.out.println("❌ Invalid option.");
                 }
             } catch (InputMismatchException e) {
-                System.out.println("Input must be a number.");
+                System.out.println("❌ Error: Enter a number.");
                 scanner.nextLine();
             }
         }
@@ -121,19 +121,22 @@ public class MyApplication {
             System.out.println("\nSeller Menu:");
             System.out.println("1. View Your Products");
             System.out.println("2. Add New Product");
-            System.out.println("3. Logout");
+            System.out.println("0. Logout");
 
             try {
                 int option = scanner.nextInt();
                 scanner.nextLine();
                 switch (option) {
-                    case 1: System.out.println(productController.getSellerProducts()); break;
-                    case 2: System.out.println("Feature in progress: Adding a new product"); break;
-                    case 3: return;
-                    default: System.out.println("Invalid option.");
+                    case 1 -> System.out.println(productController.getSellerProducts());
+                    case 2 -> addNewProduct();
+                    case 0 -> {
+                        System.out.println("Logging out...");
+                        return;
+                    }
+                    default -> System.out.println("❌ Invalid option.");
                 }
             } catch (InputMismatchException e) {
-                System.out.println("Input must be a number.");
+                System.out.println("❌ Error: Enter a number.");
                 scanner.nextLine();
             }
         }
@@ -144,38 +147,51 @@ public class MyApplication {
             System.out.println("\nCustomer Menu:");
             System.out.println("1. View Profile");
             System.out.println("2. View Categories");
-            System.out.println("3. Browse Products");
-            System.out.println("4. Logout");
+            System.out.println("3. Browse Products by Category");
+            System.out.println("0. Logout");
 
             try {
                 int option = scanner.nextInt();
                 scanner.nextLine();
                 switch (option) {
-                    case 1: System.out.println("Fetching user profile... (Feature in progress)"); break;
-                    case 2: System.out.println(categoryController.getAllCategories()); break;
-                    case 3: browseProducts(); break;
-                    case 4: return;
-                    default: System.out.println("Invalid option.");
+                    case 1 -> viewProfile();
+                    case 2 -> System.out.println(categoryController.getAllCategories());
+                    case 3 -> browseProducts();
+                    case 0 -> {
+                        System.out.println("Logging out...");
+                        return;
+                    }
+                    default -> System.out.println("❌ Invalid option.");
                 }
             } catch (InputMismatchException e) {
-                System.out.println("Input must be a number.");
+                System.out.println("❌ Error: Enter a number.");
                 scanner.nextLine();
             }
         }
     }
 
-    private void browseProducts() {
-        System.out.println("Select a category by ID to view products: ");
-        System.out.println(categoryController.getAllCategories());
-
+    private void addNewProduct() {
+        System.out.print("Enter product name: ");
+        String name = scanner.nextLine();
+        System.out.print("Enter product price: ");
+        double price;
         try {
-            int categoryId = scanner.nextInt();
+            price = scanner.nextDouble();
             scanner.nextLine();
-            System.out.println(productController.getProductById(categoryId));
         } catch (InputMismatchException e) {
-            System.out.println("ID must be a number.");
+            System.out.println("❌ Error: Price must be a number.");
             scanner.nextLine();
+            return;
         }
+        System.out.print("Enter product category: ");
+        String category = scanner.nextLine();
+
+        String response = productController.addProduct(name, price, category);
+        System.out.println(response);
+    }
+
+    private void viewProfile() {
+        System.out.println("Profile view is under development...");
     }
 
     private void getUserById() {
@@ -185,7 +201,7 @@ public class MyApplication {
             scanner.nextLine();
             System.out.println(userController.getUserById(id));
         } catch (InputMismatchException e) {
-            System.out.println("ID must be a number.");
+            System.out.println("❌ Error: ID must be a number.");
             scanner.nextLine();
         }
     }
@@ -197,7 +213,20 @@ public class MyApplication {
             scanner.nextLine();
             System.out.println(userController.deleteUser(id));
         } catch (InputMismatchException e) {
-            System.out.println("ID must be a number.");
+            System.out.println("❌ Error: ID must be a number.");
+            scanner.nextLine();
+        }
+    }
+
+    private void browseProducts() {
+        System.out.println("Select a category by ID:");
+        System.out.println(categoryController.getAllCategories());
+        try {
+            int categoryId = scanner.nextInt();
+            scanner.nextLine();
+            System.out.println(productController.getProductsByCategory(categoryId));
+        } catch (InputMismatchException e) {
+            System.out.println("❌ Error: ID must be a number.");
             scanner.nextLine();
         }
     }

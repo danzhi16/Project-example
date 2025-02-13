@@ -26,6 +26,9 @@ public class Product implements IProduct {
         this.price = price;
     }
 
+    public Product(String name, double price, int category) {
+    }
+
     @Override
     public Product createProduct(String name, String description, int categoryId, double price) {
         return new Product(idCounter++, name, description, categoryId, price);
@@ -65,6 +68,11 @@ public class Product implements IProduct {
 
     public boolean deleteProduct(int id) {
         return products.removeIf(product -> product.getId() == id);
+    }
+
+    @Override
+    public void setId(int anInt) {
+
     }
 
     public int getId() {
@@ -115,4 +123,6 @@ public class Product implements IProduct {
                 ", price=" + price +
                 '}';
     }
+
+
 }

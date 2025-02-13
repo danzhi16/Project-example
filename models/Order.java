@@ -66,6 +66,11 @@ public class Order implements IOrder {
         return orders.removeIf(order -> order.getId() == id);
     }
 
+    @Override
+    public void setId(int anInt) {
+
+    }
+
     public int getId() {
         return id;
     }
